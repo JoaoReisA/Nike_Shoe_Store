@@ -1,6 +1,6 @@
 # nike_shoe_store
+Project design - https://dribbble.com/shots/5899545-Nike-Store-app-concept
 
-A new Flutter project.
 
 ## Getting Started
 

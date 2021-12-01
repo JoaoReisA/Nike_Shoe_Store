@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                 valueListenable: notifierBottomBarVisible,
                 builder: (context, value, child) {
                   return AnimatedPositioned(
-                      duration: const Duration(milliseconds: 600),
+                      duration: const Duration(milliseconds: 200),
                       left: 0,
                       right: 0,
                       bottom: value ? 0.0 : -kToolbarHeight,

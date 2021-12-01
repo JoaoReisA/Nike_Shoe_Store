@@ -89,21 +89,11 @@ class NikeShoesDetailsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        ShoeSizesWidget(
-                          text: '6',
-                        ),
-                        ShoeSizesWidget(
-                          text: '7',
-                        ),
-                        ShoeSizesWidget(
-                          text: '8',
-                        ),
-                        ShoeSizesWidget(
-                          text: '9',
-                        ),
-                        ShoeSizesWidget(
-                          text: '11',
-                        ),
+                        ShoeSizesWidget(text: '6'),
+                        ShoeSizesWidget(text: '7'),
+                        ShoeSizesWidget(text: '8'),
+                        ShoeSizesWidget(text: '9'),
+                        ShoeSizesWidget(text: '11'),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -153,7 +143,7 @@ class NikeShoesDetailsPage extends StatelessWidget {
         valueListenable: notifierButtonsVisible,
         builder: (context, value, child) {
           return AnimatedPositioned(
-            duration: const Duration(milliseconds: 600),
+            duration: const Duration(milliseconds: 200),
             left: 0,
             right: 0,
             bottom: value ? 0 : -kToolbarHeight,
@@ -167,21 +157,30 @@ class NikeShoesDetailsPage extends StatelessWidget {
       height: size.height * 0.5,
       child: Stack(
         children: [
-          Positioned.fill(
-            child: Container(
-              color: Color(shoe.color),
+          Hero(
+            tag: 'backgound_${shoe.name}',
+            child: Positioned.fill(
+              child: Container(
+                color: Color(shoe.color),
+              ),
             ),
           ),
           Positioned(
             left: 70,
             right: 70,
             top: 10,
-            child: FittedBox(
-              child: Text(
-                shoe.modelNumber.toString(),
-                style: const TextStyle(
-                  color: Colors.black12,
-                  fontWeight: FontWeight.bold,
+            child: Hero(
+              tag: 'number_${shoe.name}',
+              child: Material(
+                color: Colors.transparent,
+                child: FittedBox(
+                  child: Text(
+                    shoe.modelNumber.toString(),
+                    style: const TextStyle(
+                      color: Colors.black12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -189,12 +188,18 @@ class NikeShoesDetailsPage extends StatelessWidget {
           PageView.builder(
               itemCount: shoe.images.length,
               itemBuilder: (context, index) {
+                final tag = index == 0
+                    ? 'image_${shoe.name}'
+                    : 'image_${shoe.name}_$index';
                 return Container(
                   alignment: Alignment.center,
-                  child: Image.asset(
-                    shoe.images[index],
-                    height: 200,
-                    width: 200,
+                  child: Hero(
+                    tag: tag,
+                    child: Image.asset(
+                      shoe.images[index],
+                      height: 200,
+                      width: 200,
+                    ),
                   ),
                 );
               })

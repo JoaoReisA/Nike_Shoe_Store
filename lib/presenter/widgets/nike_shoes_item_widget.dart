@@ -23,33 +23,47 @@ class NikeShoeItemWidget extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Color(item.color),
-                  borderRadius: BorderRadius.circular(20.0),
+              Positioned.fill(
+                child: Hero(
+                  tag: 'background_${item.name}',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(item.color),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                 ),
               ),
               Align(
                 alignment: Alignment.topCenter,
-                child: SizedBox(
-                  height: itemHeight * 0.6,
-                  child: FittedBox(
-                      child: Text(
-                    item.modelNumber.toString(),
-                    style: const TextStyle(
-                      color: Colors.black12,
-                      fontWeight: FontWeight.bold,
+                child: Hero(
+                  tag: 'number_${item.name}',
+                  child: SizedBox(
+                    height: itemHeight * 0.6,
+                    child: Material(
+                      color:Colors.transparent,
+                      child: FittedBox(
+                          child: Text(
+                        item.modelNumber.toString(),
+                        style: const TextStyle(
+                          color: Colors.black12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                     ),
-                  )),
+                  ),
                 ),
               ),
               Positioned(
                 top: 20,
                 left: 100,
                 height: itemHeight * 0.65,
-                child: Image.asset(
-                  item.images.first,
-                  fit: BoxFit.contain,
+                child: Hero(
+                  tag: 'image_${item.name}',
+                  child: Image.asset(
+                    item.images.first,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               const Positioned(
