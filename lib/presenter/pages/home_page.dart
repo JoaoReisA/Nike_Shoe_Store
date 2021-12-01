@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       itemCount: shoes.length,
+                      padding: const EdgeInsets.only(bottom: 20),
                       itemBuilder: (context, index) {
                         final item = shoes[index];
                         return NikeShoeItemWidget(
