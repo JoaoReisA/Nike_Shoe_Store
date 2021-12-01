@@ -4,9 +4,8 @@ import 'package:nike_shoe_store/presenter/pages/nike_shoes_details_page.dart';
 import 'package:nike_shoe_store/presenter/widgets/nike_shoes_item_widget.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key,}) : super(key: key);
   final ValueNotifier<bool> notifierBottomBarVisible = ValueNotifier(true);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +77,7 @@ class HomePage extends StatelessWidget {
         pageBuilder: (context, animation1, animation2) {
           return FadeTransition(
             opacity: animation1,
-            child: NikeShoesDetailsPage(),
+            child: NikeShoesDetailsPage(shoe: item,),
           );
         },
       ),
