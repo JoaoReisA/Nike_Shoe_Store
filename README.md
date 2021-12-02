@@ -1,6 +1,7 @@
 # nike_shoe_store
 Project design - https://dribbble.com/shots/5899545-Nike-Store-app-concept
 
+![alt-text](https://github.com/JoaoReisA/Nike_Shoe_Store/blob/main/assets/nike_shop_app.gif)
 
 ## Getting Started
 
