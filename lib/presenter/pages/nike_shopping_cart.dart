@@ -20,14 +20,43 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
   Animation? _animationResize;
+  Animation? _animationMovementIn;
+  Animation? _animationMovementOut;
   @override
   void initState() {
     _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _animationResize = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(
       parent: _controller!,
-      curve: const Interval(0.0, 0.2),
+      curve: const Interval(0.0, 0.3),
     ));
+    _animationMovementIn = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller!,
+      curve: const Interval(
+        0.45,
+        0.6,
+        curve: Curves.easeOutQuint,
+      ),
+    ));
+    _animationMovementOut = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller!,
+      curve: const Interval(
+        0.5,
+        1,
+        curve: Curves.elasticInOut,
+      ),
+    ));
+    _controller!.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.of(context).pop();
+      }
+    });
     super.initState();
   }
 
@@ -63,14 +92,17 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
                 Positioned.fill(
                     child: Stack(
                   children: [
+                    if (_animationMovementIn!.value != 1)
+                      Positioned(
+                        top: size.height * 0.4 +
+                            (_animationMovementIn!.value * size.height * 0.492),
+                        left: size.width / 2 - panelSizeWidth / 2,
+                        width: panelSizeWidth,
+                        child: _buildBottomSheetAnimated(size),
+                      ),
                     Positioned(
-                      top: size.height * 0.4,
-                      left: size.width/2 - panelSizeWidth/2,
-                      width: panelSizeWidth,
-                      child: _buildBottomSheetAnimated(size),
-                    ),
-                    Positioned(
-                        bottom: 40,
+                        bottom:
+                            40 * -(_animationMovementOut!.value * 2) as double,
                         left: size.width / 2 -
                             (_buttonSizeWidth * _animationResize!.value).clamp(
                                   _buttonCircularSize,
@@ -141,7 +173,8 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
   }
 
   TweenAnimationBuilder<double> _buildBottomSheetAnimated(Size size) {
-    final imageSize = 
+    final double currentImageSize = (_imageSize * _animationResize!.value)
+        .clamp(_finalImageSize, _imageSize) as double;
     return TweenAnimationBuilder(
       child: Container(
         height: (size.height * 0.60 * _animationResize!.value).clamp(
@@ -152,37 +185,49 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
           _buttonCircularSize,
           size.width,
         ),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+            topLeft: const Radius.circular(30),
+            topRight: const Radius.circular(30),
+            bottomLeft: _animationResize!.value == 1
+                ? const Radius.circular(0)
+                : const Radius.circular(30),
+            bottomRight: _animationResize!.value == 1
+                ? const Radius.circular(0)
+                : const Radius.circular(30),
+          ),
         ),
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
+            mainAxisAlignment: _animationResize!.value == 1
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.center,
             children: [
-              Image.asset(
-                widget.shoe.images.first,
-                height: 200,
-              ),
-              if (_animationResize!.value == 1) ...[
-                Column(
-                  children: [
-                    Text(
-                      widget.shoe.name,
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text('\$${widget.shoe.currentPrice.toInt().toString()}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
-                  ],
-                )
-              ]
-            ],
-          )
-        ]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Image.asset(
+                    widget.shoe.images.first,
+                    height: currentImageSize,
+                  ),
+                  if (_animationResize!.value == 1) ...[
+                    Column(
+                      children: [
+                        Text(
+                          widget.shoe.name,
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text('\$${widget.shoe.currentPrice.toInt().toString()}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18)),
+                      ],
+                    )
+                  ]
+                ],
+              )
+            ]),
       ),
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 400),
