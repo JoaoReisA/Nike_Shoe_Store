@@ -38,7 +38,7 @@ class _NikeShoppingCartState extends State<NikeShoppingCart>
       curve: const Interval(
         0.45,
         0.6,
-        curve: Curves.easeOutQuint,
+        curve: Curves.fastLinearToSlowEaseIn,
       ),
     ));
     _animationMovementOut = Tween(
