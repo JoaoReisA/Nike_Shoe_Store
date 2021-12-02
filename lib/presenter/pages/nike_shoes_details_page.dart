@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nike_shoe_store/domain/entities/nike_shoes.dart';
+import 'package:nike_shoe_store/presenter/widgets/shake_transition.dart';
 import 'package:nike_shoe_store/presenter/widgets/shoe_sizes_widget.dart';
 
 class NikeShoesDetailsPage extends StatelessWidget {
@@ -41,66 +42,78 @@ class NikeShoesDetailsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          shoe.name,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                    ShakeTransition(
+                      duration: const Duration(milliseconds: 1200),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            shoe.name,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                shoe.oldPrice.toInt().toString(),
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.lineThrough,
-                                  fontSize: 13,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  shoe.oldPrice.toInt().toString(),
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.lineThrough,
+                                    fontSize: 13,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '\$${shoe.currentPrice.toInt().toString()}',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                                Text(
+                                  '\$${shoe.currentPrice.toInt().toString()}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'AVAILABLE SIZES',
-                      style: TextStyle(
-                        fontSize: 14,
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        ShoeSizesWidget(text: '6'),
-                        ShoeSizesWidget(text: '7'),
-                        ShoeSizesWidget(text: '8'),
-                        ShoeSizesWidget(text: '9'),
-                        ShoeSizesWidget(text: '11'),
-                      ],
+                    const ShakeTransition(
+                      duration: Duration(milliseconds: 1200),
+                      child: Text(
+                        'AVAILABLE SIZES',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      'DESCRIPTION',
-                      style: TextStyle(
-                        fontSize: 14,
+                    ShakeTransition(
+                      duration: const Duration(milliseconds: 1200),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          ShoeSizesWidget(text: '6'),
+                          ShoeSizesWidget(text: '7'),
+                          ShoeSizesWidget(text: '8'),
+                          ShoeSizesWidget(text: '9'),
+                          ShoeSizesWidget(text: '11'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const ShakeTransition(
+                      duration: Duration(milliseconds: 1200),
+                      child: Text(
+                        'DESCRIPTION',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -173,12 +186,16 @@ class NikeShoesDetailsPage extends StatelessWidget {
               tag: 'number_${shoe.name}',
               child: Material(
                 color: Colors.transparent,
-                child: FittedBox(
-                  child: Text(
-                    shoe.modelNumber.toString(),
-                    style: const TextStyle(
-                      color: Colors.black12,
-                      fontWeight: FontWeight.bold,
+                child: ShakeTransition(
+                  axis: Axis.vertical,
+                  offset: 20,
+                  child: FittedBox(
+                    child: Text(
+                      shoe.modelNumber.toString(),
+                      style: const TextStyle(
+                        color: Colors.black12,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -195,10 +212,15 @@ class NikeShoesDetailsPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Hero(
                     tag: tag,
-                    child: Image.asset(
-                      shoe.images[index],
-                      height: 200,
-                      width: 200,
+                    child: ShakeTransition(
+                      duration: const Duration(milliseconds: 350),
+                      axis: Axis.vertical,
+                      offset: 30,
+                      child: Image.asset(
+                        shoe.images[index],
+                        height: 200,
+                        width: 200,
+                      ),
                     ),
                   ),
                 );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:nike_shoe_store/domain/entities/nike_shoes.dart';
+import 'package:nike_shoe_store/presenter/widgets/shake_transition.dart';
 
 class NikeShoeItemWidget extends StatelessWidget {
   const NikeShoeItemWidget({
