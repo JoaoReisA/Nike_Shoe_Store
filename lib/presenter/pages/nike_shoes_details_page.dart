@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nike_shoe_store/domain/entities/nike_shoes.dart';
+import 'package:nike_shoe_store/presenter/pages/nike_shopping_cart.dart';
 import 'package:nike_shoe_store/presenter/widgets/shake_transition.dart';
 import 'package:nike_shoe_store/presenter/widgets/shoe_sizes_widget.dart';
 
@@ -122,13 +123,13 @@ class NikeShoesDetailsPage extends StatelessWidget {
               )
             ],
           )),
-          _buildFloatingActionButtons()
+          _buildFloatingActionButtons(context)
         ],
       ),
     );
   }
 
-  Widget _buildFloatingActionButtons() {
+  Widget _buildFloatingActionButtons(BuildContext context) {
     return ValueListenableBuilder<bool>(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -148,7 +149,9 @@ class NikeShoesDetailsPage extends StatelessWidget {
                 heroTag: 'fav_2',
                 backgroundColor: Colors.black,
                 child: const Icon(Icons.shopping_cart),
-                onPressed: () {},
+                onPressed: () {
+                  _openShoppingCart(context);
+                },
               ),
             ],
           ),
@@ -156,10 +159,10 @@ class NikeShoesDetailsPage extends StatelessWidget {
         valueListenable: notifierButtonsVisible,
         builder: (context, value, child) {
           return AnimatedPositioned(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 250),
             left: 0,
             right: 0,
-            bottom: value ? 0 : -kToolbarHeight,
+            bottom: value ? 0 : -kToolbarHeight * 1.5,
             child: child!,
           );
         });
@@ -228,5 +231,21 @@ class NikeShoesDetailsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _openShoppingCart(BuildContext context) async{
+    notifierButtonsVisible.value = false;
+     await Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, animation1, __) {
+          return FadeTransition(
+            opacity: animation1,
+            child: NikeShoppingCart(shoe: shoe),
+          );
+        },
+      ),
+    );
+    notifierButtonsVisible.value = true;
   }
 }
